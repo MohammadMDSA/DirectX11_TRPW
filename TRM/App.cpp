@@ -23,6 +23,7 @@ public:
 		// Subscribe the OnActivation function to handle the Activated 'event'
 		appView->Activated += ref new TypedEventHandler< CoreApplicationView ^, IActivatedEventArgs ^>(this, &App::OnActivated);
 		CoreApplication::Suspending += ref new EventHandler<SuspendingEventArgs ^>(this, &App::OnSuspending);
+		CoreApplication::Resuming += ref new EventHandler<Object ^>(this, &App::OnResuming);
 	}
 
 	virtual void SetWindow(CoreWindow^ window)
@@ -108,6 +109,11 @@ public:
 	void OnSuspending(Object^ sender, SuspendingEventArgs^ args)
 	{
 		
+	}
+
+	void OnResuming(Object^ sender, Object^ args)
+	{
+
 	}
 };
 
