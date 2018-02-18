@@ -20,8 +20,12 @@ public:
 	// Functions called by Windows
 	virtual void Initialize(CoreApplicationView^ appView)
 	{
+		// Set WindowClosed to show app is running
+		this->m_WindowClosed = false;
+
 		// Subscribe the OnActivation function to handle the Activated 'event'
 		appView->Activated += ref new TypedEventHandler< CoreApplicationView ^, IActivatedEventArgs ^>(this, &App::OnActivated);
+
 		CoreApplication::Suspending += ref new EventHandler<SuspendingEventArgs ^>(this, &App::OnSuspending);
 		CoreApplication::Resuming += ref new EventHandler<Object ^>(this, &App::OnResuming);
 	}
@@ -40,8 +44,13 @@ public:
 		// Obtain a pointer to the window
 		CoreWindow^ window = CoreWindow::GetForCurrentThread();
 
-		// Run ProcessEvents() to dispatch events
-		window->Dispatcher->ProcessEvents(CoreProcessEventsOption::ProcessUntilQuit);
+		// Repeat until window shuts down
+		while (!m_WindowClosed) {
+
+			// Run ProcessEvents() to dispatch events
+			window->Dispatcher->ProcessEvents(CoreProcessEventsOption::ProcessAllIfPresent);
+		}
+
 	}
 
 	virtual void Uninitialize() {}
@@ -105,16 +114,19 @@ public:
 		if (show)
 			dialog->ShowAsync();
 	}
-	 
+
 	void OnSuspending(Object^ sender, SuspendingEventArgs^ args)
 	{
-		
+
 	}
 
 	void OnResuming(Object^ sender, Object^ args)
 	{
 
 	}
+
+private:
+	bool m_WindowClosed; // Turns true when it's time to shut down the window
 };
 
 // The class definition that creates an instance of our core class
