@@ -35,6 +35,7 @@ public:
 		window->PointerPressed += ref new TypedEventHandler<CoreWindow ^, PointerEventArgs ^>(this, &App::OnPointerPressed);
 		window->KeyDown += ref new TypedEventHandler<CoreWindow ^, KeyEventArgs ^>(this, &App::OnKeyDown);
 		window->PointerWheelChanged += ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &App::OnPointerWheelChanged);
+		window->Closed += ref new TypedEventHandler<CoreWindow ^, CoreWindowEventArgs ^>(this, &App::OnClosed);
 	}
 
 	virtual void Load(String^ entryPoint) {}
@@ -115,6 +116,12 @@ public:
 			dialog->ShowAsync();
 	}
 
+	void OnClosed(CoreWindow^ window, CoreWindowEventArgs^ args)
+	{
+		// Ends the main app loop
+		this->m_WindowClosed = true;
+	}
+
 	void OnSuspending(Object^ sender, SuspendingEventArgs^ args)
 	{
 
@@ -148,7 +155,3 @@ int main(Array<String^>^ args)
 
 	return 0;
 }
-
-// 1. Instructing the window to dispatch all the events.
-// 2. Writining custom functions to recieve the desired events.
-// 3. Notifying Windows about these functions.
