@@ -1,5 +1,6 @@
 // Precompiled headers
 #include "pch.h"
+#include "Game.h"
 
 //include common namespaces for simplification
 using namespace Windows::ApplicationModel;
@@ -42,6 +43,8 @@ public:
 
 	virtual void Run()
 	{
+		m_Game.Initialize();
+
 		// Obtain a pointer to the window
 		CoreWindow^ window = CoreWindow::GetForCurrentThread();
 
@@ -50,6 +53,10 @@ public:
 
 			// Run ProcessEvents() to dispatch events
 			window->Dispatcher->ProcessEvents(CoreProcessEventsOption::ProcessAllIfPresent);
+
+			// Calling update and render repeatedly
+			m_Game.Update();
+			m_Game.Render();
 		}
 
 	}
@@ -134,6 +141,7 @@ public:
 
 private:
 	bool m_WindowClosed; // Turns true when it's time to shut down the window
+	CGame m_Game;
 };
 
 // The class definition that creates an instance of our core class
