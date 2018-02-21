@@ -28,7 +28,7 @@ void CGame::Initialize()
 
 	// Convert D3D11Device1 interfac3e to an IDXGIDevice1
 	ComPtr<IDXGIDevice1> dxgiDevice;
-	dxgiDevice.As(&dxgiDevice);
+	m_Device.As(&dxgiDevice);
 
 	//Utilize the IDXGIDevice1 interface to get access to the adapter
 	ComPtr<IDXGIAdapter> dxgiAdapter;
@@ -41,11 +41,21 @@ void CGame::Initialize()
 	// set up the swap chain description struct
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc = { 0 };
 
-	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT; // How the swap chain should be utilized
-	swapChainDesc.BufferCount = 2; // A front buffer and a back buffer
-	swapChainDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM; // A common swap chain effect
-	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_SEQUENTIAL; // The recomended swap mode
-	swapChainDesc.SampleDesc.Count = 1; // Disables anti-aliasing
+	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;	// How the swap chain should be utilized
+	swapChainDesc.BufferCount = 2;									// A front buffer and a back buffer
+	swapChainDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;				// A common swap chain effect
+	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;	// The recomended swap mode
+	swapChainDesc.SampleDesc.Count = 1;								// Disables anti-aliasing
+
+	CoreWindow^ window = CoreWindow::GetForCurrentThread(); // Obtain a pointer to the window
+
+	dxgiFactory->CreateSwapChainForCoreWindow(
+		m_Device.Get(),							// Address of the device
+		reinterpret_cast<IUnknown*>(window),	// Address of the window
+		&swapChainDesc,							// Address of the swap chain description
+		nullptr,
+		&m_SwapChain
+	);
 }
 
 // Performs update to the game states
