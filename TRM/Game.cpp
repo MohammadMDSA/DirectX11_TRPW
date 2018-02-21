@@ -25,6 +25,18 @@ void CGame::Initialize()
 	// Convert the pointers from the DX 11 version to the DX 11.2 version
 	tempDevice.As(&m_Device);
 	tempDeviceContext.As(&m_DeviceContext);
+
+	// Convert D3D11Device1 interfac3e to an IDXGIDevice1
+	ComPtr<IDXGIDevice1> dxgiDevice;
+	dxgiDevice.As(&dxgiDevice);
+
+	//Utilize the IDXGIDevice1 interface to get access to the adapter
+	ComPtr<IDXGIAdapter> dxgiAdapter;
+	dxgiDevice->GetAdapter(&dxgiAdapter);
+
+	// Use the IDXGIAdapter interface to get access to the parent
+	ComPtr<IDXGIFactory2> dxgiFactory;
+	dxgiAdapter->GetParent(__uuidof(IDXGIFactory2), &dxgiFactory);
 }
 
 // Performs update to the game states
