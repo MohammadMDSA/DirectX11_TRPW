@@ -37,6 +37,15 @@ void CGame::Initialize()
 	// Use the IDXGIAdapter interface to get access to the parent
 	ComPtr<IDXGIFactory2> dxgiFactory;
 	dxgiAdapter->GetParent(__uuidof(IDXGIFactory2), &dxgiFactory);
+
+	// set up the swap chain description struct
+	DXGI_SWAP_CHAIN_DESC1 swapChainDesc = { 0 };
+
+	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT; // How the swap chain should be utilized
+	swapChainDesc.BufferCount = 2; // A front buffer and a back buffer
+	swapChainDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM; // A common swap chain effect
+	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_SEQUENTIAL; // The recomended swap mode
+	swapChainDesc.SampleDesc.Count = 1; // Disables anti-aliasing
 }
 
 // Performs update to the game states
