@@ -11,6 +11,7 @@ public:
 	ComPtr<ID3D11Device1>			m_Device;			// The device interface(Virtual representation of the video adaptor)
 	ComPtr<ID3D11DeviceContext1>	m_DeviceContext;	// The control panel for the GPU
 	ComPtr<IDXGISwapChain1>			m_SwapChain;		// The swap chaan interface
+	ComPtr<ID3D11RenderTargetView>	m_RenderTarget;
 
 	void Initialize();									// Starting up code
 	void Update();										// Code that manipulates the game, such as timer and input

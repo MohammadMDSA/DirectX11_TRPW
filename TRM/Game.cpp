@@ -56,6 +56,13 @@ void CGame::Initialize()
 		nullptr,
 		&m_SwapChain
 	);
+
+	// Get a direct pointer to the back buffer
+	ComPtr<ID3D11Texture2D> backBuffer;
+	m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), &backBuffer);
+
+	// Create a render target that points to our back buffer
+	m_Device->CreateRenderTargetView(backBuffer.Get(), nullptr, &m_RenderTarget);
 }
 
 // Performs update to the game states
@@ -67,5 +74,6 @@ void CGame::Update()
 // Renders a single frame of 3D graphics
 void CGame::Render()
 {
-
+	// Switch the back buffer and front buffer
+	m_SwapChain->Present(1, 0);
 }
