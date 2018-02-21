@@ -74,6 +74,13 @@ void CGame::Update()
 // Renders a single frame of 3D graphics
 void CGame::Render()
 {
+	// Set the new render target as active render target
+	m_DeviceContext->OMSetRenderTargets(1, m_RenderTarget.GetAddressOf(), nullptr);
+
+	// Clear the back buffer to some color
+	float color[4] = { 0.2f, 0.5f, 0.3f, 1.0f };
+	m_DeviceContext->ClearRenderTargetView(m_RenderTarget.Get(), color);
+
 	// Switch the back buffer and front buffer
 	m_SwapChain->Present(1, 0);
 }
